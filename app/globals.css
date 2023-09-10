@@ -38,6 +38,7 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -99,7 +100,16 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+::-webkit-scrollbar {
+  width: 1px;
+}
+.chat{
+  margin-top : 20px;
+  width: 100vw;
+  height: 100vh;
+  position:relative;
+  display:block;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
