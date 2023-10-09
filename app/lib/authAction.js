@@ -5,14 +5,21 @@ export const login = async (body) => {
     const response = await axios.post("/api/login", body, {
       headers: { "Content-Type": "application/json" },
     });
+
     if (response.status === 200) {
       const { message, token } = response.data;
       localStorage.setItem("token", token);
-    } else {
-      console.log("Error:", response.statusText);
+      return { success: true, message };
     }
   } catch (error) {
-    console.error("An error occurred:", error);
+    if (error.response && error.response.status === 404) {
+      return { success: false, message: "User not found" };
+    } else if (error.response && error.response.status === 401) {
+      return { success: false, message: "incorrect information" };
+    } else {
+      console.error("An error occurred:", error);
+      return { success: false, message: "An error occurred" };
+    }
   }
 };
 

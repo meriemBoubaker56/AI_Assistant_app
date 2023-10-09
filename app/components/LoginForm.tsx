@@ -1,90 +1,104 @@
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import {
-  Box,
-  Heading,
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-  Center,
-  VStack,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { login } from "../lib/authAction";
-
+import Link from "next/link";
+import { useRouter } from 'next/navigation'
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const router = useRouter();
-  const [errorMsg, setErrorMsg] = useState("");
-  const [loading, isLoading] = useState(false);
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter()
   const handleSubmit = async (e) => {
-    isLoading(true);
     e.preventDefault();
     const body = {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
+      email,
+      password,
     };
     const data = await login(body);
-    // if (data.ok) {
-    //   const userObj = await res.json();
-    //   // mutate(userObj);
-    // } else {
-    //   isLoading(false);
-    //   setErrorMsg("Incorrect username or password. Try again!");
-    // }
+    if (data?.success) {
+      router.push('/chat', { scroll: false }) 
+    } else {
+      setErrorMessage(data?.message);
+    }
   };
 
   return (
-    <Center height="100vh">
-      <Box
-        p={8}
-        maxWidth="400px"
-        borderWidth={1}
-        borderRadius="lg"
-        boxShadow="lg"
-      >
-        <Heading as="h2" size="lg" mb={6} textAlign="center">
-          Login
-        </Heading>
-        <form onSubmit={handleSubmit}>
-          <VStack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Sign in to your account
+        </h2>
+      </div>
+
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              Email address
+            </label>
+            <div className="mt-2">
+              <input
+                id="email"
+                name="email"
                 type="email"
-                placeholder="Enter your email"
                 value={email}
-                onChange={handleEmailChange}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium leading-6 text-gray-900">
+                Password
+              </label>
+              <div className="text-sm">
+                <a
+                  href="#"
+                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                >
+                  Forgot password?
+                </a>
+              </div>
+            </div>
+            <div className="mt-2">
+              <input
+                id="password"
+                name="password"
                 type="password"
-                placeholder="Enter your password"
+                required
                 value={password}
-                onChange={handlePasswordChange}
+                onChange={(e) => setPassword(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
-            </FormControl>
-            <Button type="submit" colorScheme="blue" width="full">
-              Submit
-            </Button>
-            <Link href="/register">Sign Up</Link>
-          </VStack>
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sign in
+            </button>
+          </div>
         </form>
-      </Box>
-    </Center>
+
+        <p className="mt-10 text-center text-sm text-gray-500">
+          Or create an account{" "}
+          <Link
+            href="/register"
+            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >
+            Register
+          </Link>
+        </p>
+        {errorMessage && (
+            <p className="text-red-600 font-semibold text-sm mt-10 text-center">{errorMessage}</p>
+          )}
+      </div>
+    </div>
+    
   );
 };
 
