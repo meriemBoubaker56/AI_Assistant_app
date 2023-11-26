@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+::-webkit-scrollbar {
+    width: 6px; /* Adjust the width as desired */
+  }
+  
+  /* Modify scrollbar thumb (the draggable part) */
+  ::-webkit-scrollbar-thumb {
+    background-color: #cbd5e0; /* Adjust the color as desired */
+    border-radius: 3px;
+  }
+  
+  /* Modify scrollbar track (the area the thumb moves along) */
+  ::-webkit-scrollbar-track {
+    background-color: #edf2f7; /* Adjust the color as desired */
+  }
