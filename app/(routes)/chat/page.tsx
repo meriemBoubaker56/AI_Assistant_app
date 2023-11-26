@@ -2,15 +2,12 @@
 import {
   faBolt,
   faClockRotateLeft,
-  faMeteor,
   faMoon,
   faPlusCircle,
   faSun,
-  faWandMagic,
   faWandMagicSparkles,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { calcLength } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from 'next/navigation'
 
@@ -36,7 +33,6 @@ const Chat = () => {
     // Add logic to send the new message
     // For now, let's just append the message to the array
     e.preventDefault();
-    console.log("newMessage", newMessage);
     let array = [...messages, { user: "right", text: newMessage }];
     setMessages(array);
     setNewMessage("");
@@ -45,7 +41,6 @@ const Chat = () => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    console.log("jeff");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
